@@ -34,28 +34,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const keyword = searchInput.value.trim().toLowerCase();
         if (keyword === '') return;
-
+    
         let results = [];
-
+    
+        // NEW: show all countries if the user searches "country" or "countries"
+        if (keyword === 'country' || keyword === 'countries') {
+            travelData.countries.forEach(country => {
+                results = results.concat(country.cities);
+            });
+        }
         // Check for beach keyword
-        if (keyword.includes('beach')) {
+        else if (keyword.includes('beach')) {
             results = travelData.beaches;
         }
         // Check for temple keyword
         else if (keyword.includes('temple')) {
             results = travelData.temples;
         }
-        // Check for country matches
+        // Check for specific country matches
         else {
-            // Search in countries array
             for (const country of travelData.countries) {
                 if (country.name.toLowerCase().includes(keyword)) {
-                    // Add all cities of that country
                     results = results.concat(country.cities);
                 }
             }
         }
-
+    
         displayResults(results, keyword);
     });
 
